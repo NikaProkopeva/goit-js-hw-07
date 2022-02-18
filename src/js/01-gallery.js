@@ -36,3 +36,31 @@ function onImageClick(evt) {
 }
 
 console.log(galleryItems);
+
+galleryContainer.addEventListener("click", onImgClick);
+const instance = basicLightbox.create(`<img class="modal-img" src="">`, {
+  onShow: (instance) => {
+    window.addEventListener("keydown", onEscClick);
+  },
+
+  onClose: (instance) => {
+    window.removeEventListener("keydown", onEscClick);
+  },
+});
+
+function onImgClick(evt) {
+  evt.preventDefault();
+  if (evt.target.nodeName !== "IMG") {
+    return;
+  }
+  instance.element().querySelector("img").src = evt.target.dataset.source;
+
+  instance.show();
+}
+
+function onEscClick(evt) {
+  if (evt.key === "Escape") {
+    instance.close();
+    return;
+  }
+}
